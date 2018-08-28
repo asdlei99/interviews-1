@@ -6,8 +6,8 @@ Hope to get awesome offer.
 
 ## TODO LIST
 
-- [] convex hull
-- [] LRU
-- [] Trie Tree(Prefix Tree)
-- [] union-find
-- [] A*
+- [ ] convex hull
+- [ ] LRU
+- [ ] Trie Tree(Prefix Tree)
+- [ ] union-find
+- [ ] A*
