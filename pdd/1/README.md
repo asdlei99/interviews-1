@@ -1,6 +1,6 @@
 ## Problems
 
-- [拼多多2018校招内推编程题汇总](https://www.nowcoder.com/test/6161937/summary
+- [拼多多2018校招内推编程题汇总](https://www.nowcoder.com/test/6161937/summary)
 
 ## Solution
 

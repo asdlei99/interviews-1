@@ -11,3 +11,4 @@ Hope to get awesome offer.
 - [ ] Trie Tree(Prefix Tree)
 - [ ] union-find
 - [ ] A*
+- [ ] segment tree
