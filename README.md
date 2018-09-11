@@ -7,7 +7,7 @@ Hope to get awesome offer.
 ## TODO LIST
 
 - [ ] convex hull
-- [ ] LRU
+- [x] LRU
 - [ ] Trie Tree(Prefix Tree)
 - [ ] union-find
 - [ ] A*
