@@ -2,7 +2,7 @@
  * @author pwxcoo
  * @email pwxcoo@gmail.com
  * @create date 2018-09-11 10:30:47
- * @modify date 2018-09-11 10:30:47
+ * @modify date 2018-09-11 13:28:41
  * @desc LRU cache implemented by c++
 */
 
@@ -92,16 +92,13 @@ class lru_cache
 
 #endif /* _LRUCACHE_HPP_INCLUDED_ */
 
-
 //////////////////////////////////// TEST MODULE BEGIN ///////////////////////////////////////////////////////////
-
 
 #include <assert.h>
 
 int main()
 {
     printf("-------------------[TEST] LRU cache begin-------------------------\n\n");
-    // std::cout << "-------------------[TEST] LRU cache begin-------------------------" << std::endl;
 
     cache::lru_cache<int, int> cache_lru(5);
 
@@ -111,12 +108,11 @@ int main()
         printf("put() {key:%d, value:%d} to cache\n", i, i * i);
 
         cache_lru.put(i, i * i);
-        assert (cache_lru.get(i)==i*i);
+        assert(cache_lru.get(i) == i * i);
 
         cache_lru.debug("after :");
         printf("\n");
     }
-
 
     for (int i = 0; i < 3; i++)
     {
@@ -124,7 +120,7 @@ int main()
 
         try
         {
-            printf("get() {key:%d} from cache: %d\n", i, cache_lru.get(i));           
+            printf("get() {key:%d} from cache: %d\n", i, cache_lru.get(i));
         }
         catch (const std::exception &e)
         {
@@ -137,7 +133,5 @@ int main()
 
     printf("-------------------[TEST] LRU cache end----------------------------\n");
 }
-
-
 
 //////////////////////////////////// TEST MODULE END   ///////////////////////////////////////////////////////////
