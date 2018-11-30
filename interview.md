@@ -1,0 +1,228 @@
+## Java 与 C++ 区别？
+
+- Java 是纯粹的面向对象的语言，所有的对象都继承于 `java.lang.Object`，C++ 为了兼容 C，既支持面向对象也支持面向过程。
+- Java 通过虚拟机从而实现跨平台特性，但是 C++ 依赖于特定的平台。
+- Java 没有指针，它的引用可以理解为安全的指针，而 C++ 具有和 C 一样的指针。
+- Java 支持自动垃圾回收，而 C++ 需要手动回收。
+- Java 不支持多重继承，只能通过接口来达到相同的目的，而 C++ 支持多重继承。
+- Java 不支持操作符重载，虽然可以对两个 String 对象支持加法操作，但是这是语言内置的操作，不属于操作符重载，而 C++ 可以。
+- Java 的 goto 是保留字，但是不可用，C++ 可以使用 goto。
+- Java 不支持条件编译，C++ 通过 #ifdef #ifndef 等预处理命令从而实现条件编译。
+
+### References
+
+- [What are the main differences between Java and C++?](http://cs-fundamentals.com/tech-interview/java/differences-between-java-and-cpp.php)
+
+----
+
+## Java 创建对象的几种方式
+
+- new
+- 反射。`Class.forName()` ，`User.class.newInstance()` / `java.lang.reflect.Constructor` 里的 `newInstance`
+- clone
+- 序列化
+
+----
+
+## Object 类的方法
+
+- clone()
+- equals()
+- finalize()
+- getClass()
+- hashCode()
+- notify()
+- notifyAll()
+- toString()
+- wait()
+
+----
+
+## 线程间通信
+
+- synchronized，volatile + while（共享内存）
+- wait/notify
+- 管道通信（消息传递）
+
+----
+
+## Java Bean
+
+- Must implement Serializable
+- It should have a public no-args constructor
+- All properties in java bean must be private with public getters and setters methods
+
+----
+
+## 为什么 Java 的引用是安全的指针？
+
+- 因为 Java 的引用虽然本质上还是指针，但是限制了一些行为，比如不能定义向前向后的行为; 当对象不在了，就不能访问这块内存; 对象移动了，对应的引用也会移动（内存整理）; 指针还能做运算，引用不能...
+
+----
+
+## 什么是冯诺依曼体系结构
+
+- 计算机处理的数据和指令一律用二进制表示
+- 顺序执行程序。程序首先 dump 到内存中，在自动地从内存中取出指令一条一条执行
+- 运算器 + 控制器 + 存储器 + 输入设备 + 输出设备 => （控制器例如程序计数器，指令寄存器... 运算器和控制器统称为中央处理器
+
+### References
+
+- [冯诺依曼型计算机的五大组成部分及各部分的功能](https://zhidao.baidu.com/question/981698397758617659.html)
+
+----
+
+## Java 的多态
+
+- 编译时多态：`@Overload`
+- 运行时多态：`extends` || `implements`
+
+----
+
+### 多态的实现机制
+
+JVM 执行 Java 字节码时，**类型信息被存放在方法区中**，为了优化调用方法的速度，方法区的类型信息中增加一个指针，该指针指向一张记录该类方法入口的表（称为方法表），**表中的每一项都是相应方法的指针**。
+
+因为 Java 是单继承，表中是按顺序存放的， Object -> parent class - > subclass，只有非私有的实例方法才会出现。
+
+- 静态方法 -> invokestatic
+- 私有方法和构造函数 -> invokespecial
+- 只有被 invokevirtual, invokeinterface 指令调用的方法才会在方法表中出现
+
+----
+
+- [Java 多态的实现机制](https://www.cnblogs.com/crane-practice/p/3671074.html)
+
+----
+
+## String， StringBuffer， StringBuilder
+
+- String
+    ```java
+    public final class String
+        implements java.io.Serializable, Comparable<String>, CharSequence {
+        /** The value is used for character storage. */
+        private final char value[];
+    ```
+    
+    1. 是 final 修饰 2. 并且内部的 char[] 也用 final 3. 内部没有可以改变 char[] 的方法 => 保证了 String 不可变
+- StringBuffer extends AbstractStringBuilder，用 synchronized 保证线程安全
+- StringBuilder extends AbstractStringBuilder
+
+----
+
+## 接口和抽象类
+
+- ~~抽象类可以有非抽象的方法~~ 现在 接口也可以有 default 实现了
+- 接口中的实例变量默认是 final，抽象类不一定
+- Java 中只能单继承，用抽象类代价比较高
+- 一个类要实现接口的话，要实现全部方法，而抽象类不一定
+
+----
+
+## 四种引用
+
+- 强引用（Strong Reference）
+    - 如果一个对象具有强引用，垃圾回收器绝不会回收它
+- 软引用（Soft Reference）
+    - 一个对象只具有软引用，只要内存空间足够，垃圾回收器就不会回收它
+    - 设计 Cache
+- 弱引用（Weak Reference）
+    - 垃圾回收器一旦发现一个对象只具有弱引用，不管内存是否足够，都会回收它的内存，不过由于垃圾回收器是一个优先级很低的线程，因此不会很快发现它们
+    - 和引用队列联合使用，如果要被垃圾回收，就会加入到与之关联的引用队列
+    - 因为不干扰对象被 GC 回收，通常用于 Debug，内存监视工具程序当中
+- 虚引用（Plantom Reference）
+    - 任何时候都会被回收
+    - 必须与引用队列联合使用，如果要被垃圾回收，就会加入到与之关联的引用队列
+    - 用来跟踪垃圾回收器活动
+
+----
+
+## Integer 问题
+
+- Integer 类型 -128-127 会有优化，有一个常量池一样的东西
+- 如果使用 new 关键字会忽略这种优化
+- Integer 和 int 比较，因为自动拆箱装箱得到理想的结果，两个 Integer 类型数值比较时需要把其中一个转换成 int。
+
+### References
+
+- [java中两个Integer类型的值相比较的问题](https://www.cnblogs.com/xh0102/p/5280032.html)
+
+
+----
+
+## Spring boot
+
+- Spring 是一个 Java 开发框架，核心是 IoC 和 AOP。
+- Spring MVC 是一个 MVC 框架（解耦）。
+- Spring boot 是发现每次开发都要写很多配置文件，样本代码，为了简化工作流程，这套就是 Spring boot
+    - 自动配置
+    - 不需要单独安装 Tomcat 这类容器服务器
+    - 专注业务逻辑
+
+----
+
+## 深拷贝和浅拷贝
+
+### 浅拷贝（shallow 
+
+1. 一个拷贝构造函数就可以实现浅拷贝
+2. 重写 clone() 方法， Cloneable 接口
+
+浅拷贝中对于基本数据类型，也就是非引用类型（这里把 String 看作非引用类型，其实 String 的定义是引用类型。因为在 Java 中 String 对象的值不能被改变，如果改变会生成一个新的对象，所以 String 可以被深克隆）的值直接赋给新的实例。但是对引用类型，如数组，一个类的对象是引用复制，在内存中并没有多一个新的数组。所以克隆的实例要是修改引用类型的值，会影响到原来实例。
+
+### 深拷贝（deep copy)
+
+1. 序列化
+2. 递归遍历所有的属性，把每个都浅拷贝了，就实现了把整个都深拷贝了（数组拷贝用 `Arrays.copyOf()`)
+
+### References about copy
+
+- [Java 浅拷贝和深拷贝的理解和实现方式](https://www.cnblogs.com/shakinghead/p/7651502.html)
+
+------
+
+## 序列化和持久化
+
+### 持久化（Persistence)
+
+持久化是为了让对象可持久保存在储存介质上（由于内存的缺陷），**目标是保存数据，并提供查询修改的手段**。为了实现持久化，通常要使用持久化框架，如 Hibernate 等。 
+
+### 序列化（Serialization)
+
+序列化是为了**数据的传输和交换**，可以是二进制，XML，JSON。
+
+Java 中序列化通常需要显式指定 `SerialieId`（不指定 JVM 也会自动生成，但不同版本的 JVM 生成不同）。有了这个 Id，下次类有改动也能序列化回来。
+
+### References
+
+- [什么是对象持久化，与数据序列化有何联系？ zhihu](https://www.zhihu.com/question/20706270)
+- [序列化和持久化的区别与联系](https://blog.csdn.net/shixiaoguo90/article/details/22433245)
+
+
+----
+
+## Java 中的 NIO，BIO，AIO
+
+- BIO，同步并阻塞，一个连接一个线程
+- NIO，同步非阻塞，一个请求一个线程，聊天服务器
+- AIO，异步非阻塞，一个有效请求一个线程，比如相册服务器
+
+----
+
+## 常见设计模式
+
+- 工厂模式，一个用于创建对象的接口，让子类决定实例化哪个类，`Factory Method` 使一个类的实例化延迟到子类。
+- 单例模式
+- 适配器模式
+- 装饰器模式
+- 代理模式
+- 迭代器模式
+
+----
+
+## 数据库三范式
+
+- 1NF，不可分
+- 2NF，非主属性必须完全函数依赖主键（一般只有一个主键就不会发生这种情况）
+- 3NF，不存在非主属性依赖其它非主属性
