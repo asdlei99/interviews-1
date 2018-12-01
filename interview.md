@@ -225,4 +225,211 @@ Java 中序列化通常需要显式指定 `SerialieId`（不指定 JVM 也会自
 
 - 1NF，不可分
 - 2NF，非主属性必须完全函数依赖主键（一般只有一个主键就不会发生这种情况）
+    - {学号，姓名，课程，成绩}，{学号，课程} 为主键，成绩完全函数依赖，但是姓名部分函数依赖
 - 3NF，不存在非主属性依赖其它非主属性
+
+
+----
+
+## Concurrent 包下常用的类
+
+- `Executor` 创建线程池
+- `ConcurrentHashMap` 线程安全的 HashMap
+- `Callable` 和 `Future`
+- `Semaphore` 控制多线程对共享资源的访问
+- `ReentrantLock` 和 `Conditon`
+- `BlockingQueue`
+    - `ArrayBlockingQueue`
+    - `LinkedBlockingQueue`
+    - `DelayQueue`
+    - `PriorityBlockingQueue`
+    - `SynchronousQueue`
+- `CountDownLatch`
+- `CycliBarrier`
+- `Exchanger`
+
+----
+
+## sychronized 的优化
+
+- 适应自旋
+- 锁消除
+- 锁粗化
+- 轻量锁
+- 偏向锁
+- 等等...
+
+----
+
+## MyISAM 和 InnoDB 
+
+主要区别
+
+- MyISAM 是非事务安全型的 / 是
+- MyISAM 锁的粒度是表级的 / 行
+- MyISAM 支持全文索引 / 不支持（InooDB 在 MySQL5.6.24 后的版本中也支持了）
+- MyISAM 相对简单，效率相对较高
+- MyISAM 保存成文件，跨平台迁徙方便
+- **MyISAM 是非聚集索引 / 聚集索引**
+
+应用场景
+
+- MyISAM, 高速存储和快速查询，大量 SELECT
+- InnoDB, 支持 ACID, 需要大量 INSERT，UPDATE，提高用户并发操作的性能
+
+----
+
+## 哪些可作为 GC Roots 的对象
+
+- JVM 栈中的对象
+- 方法区的静态成员
+- 方法区的常量应用对象
+- 本地方法区的 JNI（Native 方法）引用的对象
+
+----
+
+## 垃圾收集器
+
+Serial
+
+- 单线程收集器，在垃圾收集的时候必须暂停其他所有的工作线程  
+- 新生代：复制
+- 老年代：标记整理
+- 简单高效，Client 模式下默认的新生代收集器
+
+ParNew New
+
+- Serial 的多线程版本
+- 新生代：复制
+- 老年代：标记整理
+- 运行在 Server 模式下首选的新生代收集器
+- 除了 Serial，只有它能配合 CMS
+
+ParNew Scanvenge / ParNew Old
+
+- 类似 ParNew，但更关注吞吐量
+
+G1
+
+- 优先级区域
+- 结合了空间整合，不会产生大量的碎片
+- 让使用者明确指定停顿时间
+
+CMS（Concurrent Mark Sweep：标记清除老年代收集器）
+
+- 一种以最短停顿时间为目标的收集器，适合于 B/S 系统的服务器
+- 初始标记，根可以关联到的对象
+- 并发标记
+- 重新标记
+- 并发清除
+- 并发重置
+
+----
+
+## JVM 内存的划分
+
+- 程序计数器（执行本地方法时其值为 undefined）
+- 虚拟机栈
+- 本地方法栈（没有作强制规定，HotSpot 把虚拟机栈和本地方法栈合而为一）
+- Java 堆
+- 方法区（类信息，常量，静态变量等）
+- 运行时常量池
+
+----
+
+## 双亲委派
+
+- 启动（Bootstrap）类加载器，加载 `<Java Runtime Home>/lib` 下面的类库，开发者无法获取
+- 标准扩展（Extension）类加载器，加载 `<Java Runtime Home>/lib/ext` 或者由系统变量 `java.ext.dir` 指定位置
+- 系统（System）类加载器，加载 `CLASSPATH` 中指定的类库加载到内存
+- 线程上下文类加载器
+
+----
+
+## `Student s = new Student()` 过程
+
+- 加载 Student.class
+- 在栈内存中为 s 开辟空间
+- 在堆内存为学生开辟空间
+- 默认初始化
+- 显示初始化
+- 构造方法
+- 对象地址赋给 s
+
+----
+
+## Spring IoC
+
+- 反射 + 工厂创建实例
+- 获取需要注入的接口实现类注入给该接口
+
+----
+
+## Spring AOP
+
+- 动态代理
+    - JDK 动态代理，目标类所实现接口的另一个实现版本
+    - CGLibProxy 返回的动态代理类，目标代理类的子类
+
+----
+
+## JDK 动态代理 vs CGLib
+
+- JDK 动态代理只能对实现了接口的类生成代理，不能针对类
+- CGLib 是针对类实现代理，生成一个子类（继承）
+- JDK 动态代理不需要第三方，CGLib 必须依赖 CGLib 的类库
+
+----
+
+## Spring MVC 工作原理
+
+- 所有请求交给前端控制器 DispathcherServlet 来处理
+- 找到对应的 Handler
+- 通过 HandlerAdapter 封装
+- HandlerAdapter 调用 Handler
+- 返回 ModelAndView 逻辑视图
+- DispatcherServlet 借助 ViewResolver 解析为真实视图
+- DispatcherServlet 渲染
+- 返回
+
+----
+
+## 死锁的必要条件
+
+- 互斥（临界资源）
+- 不可抢占
+- 占有且等待
+- 循环等待条件（环路）
+
+----
+
+## 进程间通信有哪些方式
+
+- 管道
+- 信号
+- 消息队列
+- 共享内存，结合信号量使用，可以达到进程间同步与互斥
+- 信号量
+- 套接字
+
+----
+
+## 分布式 hash 要注意什么
+
+DHT
+
+- 分布均匀
+- 增减节点后，cache 迁徙做到最少
+
+----
+
+## [智力题]50 红球和 50 黑球问题
+
+给你 50 个红球和 50 个黑球，有两个一模一样的桶，往桶里放球，什么策略可以让朋友抽到红球的概率更高？
+
+**一个桶 1 个红，剩下的全放另一个桶。**
+
+0.5 * 1 + 0.5 * 0.5 = 0.75
+
+----
+
