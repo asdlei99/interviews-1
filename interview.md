@@ -433,3 +433,23 @@ DHT
 
 ----
 
+## TCP报头格式
+
+![tcp-header](https://i.loli.net/2018/06/24/5b2fbfdc6c291.png)
+
+- 源端口，2byte
+- 目的端口，2byte
+- 序号，4byte
+- 确认号，4byte
+- 数据偏移，4bit，单位是 4byte
+- 保留，6bit，全部置为 0
+- URG
+- ACK
+- PSH
+- RST  
+- SYN
+- FIN
+- 窗口，2byte
+- 检验和，2byte
+- 紧急指针，2byte
+- 选项，40byte
