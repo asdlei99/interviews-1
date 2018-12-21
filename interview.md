@@ -453,3 +453,80 @@ DHT
 - 检验和，2byte
 - 紧急指针，2byte
 - 选项，40byte
+
+----
+
+## UDP报头格式
+
+![udp-header](https://i.loli.net/2018/06/25/5b2fc000f3111.jpg)
+
+- 源端口，2byte
+- 目的端口，2byte
+- 长度，2byte
+- 检验和，2byte
+
+----
+
+## HTTP状态码
+
+- 100, Continue
+- 101, Switching Protocols
+- 200, OK
+- 201, Created (GET)
+- 202, Accepted (but unfinished)
+- 203, Non-Authoritative Information
+- 204, Not Content
+- 205, Reset Content (reset form content)
+- 206, Partial Content
+- 300, Multiple Choices
+- 301, Moved Permanently
+- 302, Found
+- 304, Not Modified
+- 305, Use Proxy
+- 400, Bad Request (Server cannot process the request due to something that is perceived to be a client error)
+- 401, Unauthorized
+- 402, Payment Required (reserved for future use)
+- 403, Forbidden
+- 404, Not Found
+- 405, Method Not Allowed
+- 406, Not Acceptable
+- 407, Proxy Authentication Required
+- 408, Request Times-Out
+- 409, Conflict (Conflicts are most likely to occur in response to a PUT request)
+- 410, Gone
+- 411, Length Required
+- 412, Precondition Failed
+- 414, Request Entity Too Large
+- 415, Unsupported Media Type
+- 416, Requested Ranged not satisfiable
+- 417, Expectation Failed
+- 500, Internal Server Error
+- 501, Not Implement
+- 502, Bad Gateway
+- 503, Service Unavailable
+- 504, Gateway Time-out
+- 505, HTTP Version not supported
+
+----
+
+## HTTP Method
+
+- CONNECT
+- DELETE
+- GET
+- HEAD, 在下载一个大文件前先获取其大小再决定是否要下载
+- OPTIONS
+- PATCH，局部更新，但是是非幂等的([某些情况](https://stackoverflow.com/questions/41390997/why-patch-is-neither-safe-nor-idempotent))
+- POST
+- PUT
+- TRACE
+
+----
+
+## HTTP field
+
+
+
+### References
+
+- [HTTP头字段](https://zh.wikipedia.org/wiki/HTTP%E5%A4%B4%E5%AD%97%E6%AE%B5)
