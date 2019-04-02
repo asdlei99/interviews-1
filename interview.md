@@ -104,7 +104,7 @@ JVM 执行 Java 字节码时，**类型信息被存放在方法区中**，为了
         /** The value is used for character storage. */
         private final char value[];
     ```
-    
+
     1. 是 final 修饰 2. 并且内部的 char[] 也用 final 3. 内部没有可以改变 char[] 的方法 => 保证了 String 不可变
 - StringBuffer extends AbstractStringBuilder，用 synchronized 保证线程安全
 - StringBuilder extends AbstractStringBuilder
@@ -164,7 +164,7 @@ JVM 执行 Java 字节码时，**类型信息被存放在方法区中**，为了
 
 ## 深拷贝和浅拷贝
 
-### 浅拷贝（shallow 
+### 浅拷贝（shallow
 
 1. 一个拷贝构造函数就可以实现浅拷贝
 2. 重写 clone() 方法， Cloneable 接口
@@ -186,7 +186,7 @@ JVM 执行 Java 字节码时，**类型信息被存放在方法区中**，为了
 
 ### 持久化（Persistence)
 
-持久化是为了让对象可持久保存在储存介质上（由于内存的缺陷），**目标是保存数据，并提供查询修改的手段**。为了实现持久化，通常要使用持久化框架，如 Hibernate 等。 
+持久化是为了让对象可持久保存在储存介质上（由于内存的缺陷），**目标是保存数据，并提供查询修改的手段**。为了实现持久化，通常要使用持久化框架，如 Hibernate 等。
 
 ### 序列化（Serialization)
 
@@ -270,7 +270,7 @@ Java 中序列化通常需要显式指定 `SerialieId`（不指定 JVM 也会自
 
 ----
 
-## MyISAM 和 InnoDB 
+## MyISAM 和 InnoDB
 
 主要区别
 
@@ -301,7 +301,7 @@ Java 中序列化通常需要显式指定 `SerialieId`（不指定 JVM 也会自
 
 Serial
 
-- 单线程收集器，在垃圾收集的时候必须暂停其他所有的工作线程  
+- 单线程收集器，在垃圾收集的时候必须暂停其他所有的工作线程
 - 新生代：复制
 - 老年代：标记整理
 - 简单高效，Client 模式下默认的新生代收集器
@@ -455,7 +455,7 @@ DHT
 - URG
 - ACK
 - PSH
-- RST  
+- RST
 - SYN
 - FIN
 - 窗口，2byte
@@ -543,8 +543,29 @@ DHT
 
 ## HTTP field
 
-
-
-### References
-
 - [HTTP头字段](https://zh.wikipedia.org/wiki/HTTP%E5%A4%B4%E5%AD%97%E6%AE%B5)
+
+## IO模型
+
+1. blocking IO
+2. nonblocking IO (polling)
+3. IO multiplexing
+    - select
+        - invoke select
+        - copy fdset to kernel
+        - ready return (if not ready, block until ready)
+        - iterate fdset and handle
+    - poll, same with select (but without fd number limit)
+    - epoll
+        - epoll_create()
+        - epoll_ctl(), register in kernel
+        - epoll_wait(), get ready fd (fd will callback if ready)
+4. asynchronous IO
+
+PS:
+
+- epoll 有两种模式，LT (level triggered)(default), ET (edge triggered)(通知一次，高速工作方式)。
+- epoll 相对 select/poll 优点：
+    - 相对 select fd 数量不受限制
+    - IO 效率不受 fd 数量影响，复杂度 O(1)。select/poll 直接检测 fd，epoll 检测就绪队列
+    - select/poll 把 fd 监听列表放在用户空间，epoll 在内核建立 fd 监听列表（红黑树），通过 epoll_ctl() 增删改。epoll 解决重复拷贝问题。
